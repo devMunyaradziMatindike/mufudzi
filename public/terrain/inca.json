@@ -1,0 +1,14 @@
+{
+  "west": -72.58024970856249,
+  "south": -13.286070402685796,
+  "east": -72.4311502914375,
+  "north": -13.140918421674813,
+  "width": 512,
+  "height": 512,
+  "minEle": 1565,
+  "maxEle": 5293,
+  "widthM": 16140,
+  "heightM": 16140,
+  "zoom": 12,
+  "source": "AWS Terrain Tiles (Mapzen Terrarium), https://registry.opendata.aws/terrain-tiles/"
+}
