@@ -122,7 +122,7 @@ export function ScheduleDemo() {
   };
 
   return (
-    <div className="fixed inset-0 z-40 overflow-auto bg-surface">
+    <div data-lenis-prevent className="fixed inset-0 z-40 overflow-auto bg-surface">
       <div className="mx-auto max-w-[1080px] px-4 pb-16 pt-28 sm:px-6">
         <div className="card grid shadow-[0_24px_60px_-36px_rgba(31,38,26,0.45)] lg:grid-cols-[280px_minmax(0,1fr)_280px]">
           <div className="p-6 sm:p-8 lg:pr-6">

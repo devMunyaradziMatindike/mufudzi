@@ -11,10 +11,12 @@ import { Partners } from "./sections/Partners";
 import { Footer } from "./sections/Footer";
 import { AppDownload, useDownloadScreen } from "./sections/AppDownload";
 import { ScheduleDemo, useDemoScreen } from "./sections/ScheduleDemo";
+import { CeoRemarks, useRemarksScreen } from "./sections/CeoRemarks";
 
 export default function App() {
   const download = useDownloadScreen();
   const demo = useDemoScreen();
+  const remarks = useRemarksScreen();
   useEffect(() => {
     startSmoothScroll();
   }, []);
@@ -24,6 +26,7 @@ export default function App() {
       <Nav />
       {download && <AppDownload />}
       {demo && <ScheduleDemo />}
+      {remarks && <CeoRemarks />}
       <main>
         <Hero />
         <Pricing />

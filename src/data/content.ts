@@ -7,7 +7,7 @@ export const CONTACT = {
   email: "info@nessosystems.co.zw",
   play: "https://play.google.com/store/apps/details?id=com.musikawedu.mobile",
   appStore: "https://apps.apple.com/zw/app/tracesky/id6771047295",
-  apk: "/TraceSky_Android.apk",
+  apk: "/Mufudzi%20Tracking%20App.apk",
 };
 
 export const PRICING = {

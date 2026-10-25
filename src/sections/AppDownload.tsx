@@ -13,7 +13,7 @@ export function useDownloadScreen() {
 
 export function AppDownload() {
   return (
-    <div className="fixed inset-0 z-40 overflow-auto bg-white">
+    <div data-lenis-prevent className="fixed inset-0 z-40 overflow-auto bg-white">
       <div className="mx-auto flex min-h-full max-w-[720px] flex-col items-center justify-center px-6 pb-16 pt-28 text-center">
         <h1 className="text-[clamp(32px,4vw,48px)] font-bold leading-tight tracking-tight text-ink">
           Get the app.
@@ -25,8 +25,8 @@ export function AppDownload() {
           <a href={CONTACT.appStore} target="_blank" rel="noreferrer" className="block">
             <img src="/images/badge-app-store.svg" alt="Download TraceSky on the App Store" className="h-14 w-auto" />
           </a>
-          <a href={CONTACT.apk} download="TraceSky_Android.apk" className="block">
-            <img src="/images/badge-google-play.png" alt="Download TraceSky for Android" className="h-[84px] w-auto" />
+          <a href={CONTACT.apk} download="Mufudzi Tracking App.apk" className="block">
+            <img src="/images/badge-google-play.png" alt="Download the Mufudzi Tracking App" className="h-[84px] w-auto" />
           </a>
         </div>
       </div>
