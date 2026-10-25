@@ -1,4 +1,4 @@
-import type { LonLat } from "../data/treks";
+export type LonLat = [number, number];
 
 const R = 6371008.8; // mean Earth radius, metres
 const toRad = (d: number) => (d * Math.PI) / 180;
@@ -57,6 +57,14 @@ export function boundsOf(path: LonLat[], padFrac = 0.25): Bounds {
   const cx = (x0 + x1) / 2;
   const cy = (y0 + y1) / 2;
   return mercatorBounds(cx - size / 2, cy - size / 2, cx + size / 2, cy + size / 2);
+}
+
+/** A square box of `sizeKm` ground width centred on a point. */
+export function boundsFromCenter([lon, lat]: LonLat, sizeKm: number): Bounds {
+  const [cx, cy] = mercator([lon, lat]);
+  const metresPerUnit = 2 * Math.PI * R * Math.cos(toRad(lat));
+  const h = (sizeKm * 1000) / 2 / metresPerUnit;
+  return mercatorBounds(cx - h, cy - h, cx + h, cy + h);
 }
 
 export function inverseMercator(x: number, y: number): LonLat {

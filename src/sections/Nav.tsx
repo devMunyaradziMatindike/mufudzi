@@ -2,60 +2,91 @@ import { useEffect, useState } from "react";
 import { Logo } from "../components/ui";
 import { scrollTo } from "../lib/smooth-scroll";
 
-const TABS = [
-  { id: "top", n: "00", label: "Treks" },
-  { id: "lengths", n: "01", label: "Lengths" },
-  { id: "included", n: "02", label: "Included" },
-  { id: "guides", n: "03", label: "Guides" },
-  { id: "when", n: "04", label: "When to go" },
-  { id: "faq", n: "05", label: "FAQ" },
+const LINKS: { id: string; label: string; href?: string; button?: boolean }[] = [
+  { id: "vision", label: "Vision" },
+  { id: "tracker", label: "Tracker" },
+  { id: "pricing", label: "Pricing" },
+  { id: "app", label: "Mobile App", href: "#download" },
+  { id: "why", label: "Why Mufudzi" },
+  { id: "demo", label: "Schedule live demo", href: "#demo", button: true },
 ];
 
 export function Nav() {
-  const [active, setActive] = useState("top");
   const [solid, setSolid] = useState(false);
-
+  const [open, setOpen] = useState(false);
   useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
-      },
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    TABS.forEach((t) => {
-      const el = document.getElementById(t.id);
-      if (el) obs.observe(el);
-    });
-    const onScroll = () => setSolid(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      obs.disconnect();
-      window.removeEventListener("scroll", onScroll);
-    };
+    const on = () => setSolid(window.scrollY > 24);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
   }, []);
 
   const go = (id: string) => (e: React.MouseEvent) => {
     e.preventDefault();
-    scrollTo(`#${id}`);
+    setOpen(false);
+    if (location.hash === "#download" || location.hash === "#demo") {
+      history.pushState(null, "", `${location.pathname}${location.search}`);
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+    }
+    scrollTo(`#${id}`, -72);
   };
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${solid ? "bg-ink/80 backdrop-blur-md" : ""}`}
-    >
-      <div className="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 py-4 md:px-10">
-        <Logo />
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Sections">
-          {TABS.map((t) => (
-            <a key={t.id} href={`#${t.id}`} onClick={go(t.id)} className={`tab ${active === t.id ? "tab-active" : ""}`}>
-              {t.n} {t.label}
-            </a>
-          ))}
-        </nav>
-        <a href="#book" onClick={go("book")} className="btn btn-paper">
-          <span className="dot" /> Book a trek
-        </a>
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className={`transition-colors duration-300 ${solid ? "bg-white/90 shadow-[0_1px_0_#e4e8de] backdrop-blur-md" : ""}`}>
+        <div className="mx-auto flex h-[68px] max-w-[1280px] items-center justify-between gap-6 px-6">
+          <Logo />
+          <nav className="hidden items-center gap-7 text-[14px] font-semibold text-grey lg:flex" aria-label="Main">
+            {LINKS.map((l) => (
+              <NavLink key={l.id} link={l} className="transition hover:text-green-dark" onGo={go} onClose={() => setOpen(false)} />
+            ))}
+          </nav>
+          <div className="flex items-center gap-3">
+            <button className="grid h-10 w-10 place-items-center rounded-full border border-line lg:hidden" aria-label="Menu" onClick={() => setOpen(!open)}>
+              <span className="block h-0.5 w-4 bg-ink" />
+            </button>
+          </div>
+        </div>
+        {open && (
+          <nav className="border-t border-line bg-white px-6 py-4 lg:hidden" aria-label="Mobile">
+            {LINKS.map((l) => (
+              <NavLink key={l.id} link={l} className="block py-2 font-semibold" onGo={go} onClose={() => setOpen(false)} />
+            ))}
+          </nav>
+        )}
       </div>
     </header>
+  );
+}
+
+function NavLink({
+  link,
+  className,
+  onGo,
+  onClose,
+}: {
+  link: (typeof LINKS)[number];
+  className: string;
+  onGo: (id: string) => (e: React.MouseEvent) => void;
+  onClose: () => void;
+}) {
+  if (link.href) {
+    const external = link.href.startsWith("http");
+    return (
+      <a
+        href={link.href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noreferrer" : undefined}
+        className={link.button ? "btn btn-green btn-sm" : className}
+        onClick={onClose}
+      >
+        {link.label}
+      </a>
+    );
+  }
+  return (
+    <a href={`#${link.id}`} onClick={onGo(link.id)} className={className}>
+      {link.label}
+    </a>
   );
 }

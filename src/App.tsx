@@ -2,15 +2,19 @@ import { useEffect } from "react";
 import { startSmoothScroll } from "./lib/smooth-scroll";
 import { Nav } from "./sections/Nav";
 import { Hero } from "./sections/Hero";
-import { Trail } from "./sections/Trail";
-import { Lengths } from "./sections/Lengths";
-import { Included } from "./sections/Included";
-import { Guides } from "./sections/Guides";
-import { WhenToGo } from "./sections/WhenToGo";
-import { FAQ } from "./sections/FAQ";
+import { Pillars } from "./sections/Pillars";
+import { Solutions } from "./sections/Solutions";
+import { Strengths } from "./sections/Strengths";
+import { Pricing } from "./sections/Pricing";
+import { HowItWorks } from "./sections/HowItWorks";
+import { Partners } from "./sections/Partners";
 import { Footer } from "./sections/Footer";
+import { AppDownload, useDownloadScreen } from "./sections/AppDownload";
+import { ScheduleDemo, useDemoScreen } from "./sections/ScheduleDemo";
 
 export default function App() {
+  const download = useDownloadScreen();
+  const demo = useDemoScreen();
   useEffect(() => {
     startSmoothScroll();
   }, []);
@@ -18,14 +22,16 @@ export default function App() {
   return (
     <>
       <Nav />
+      {download && <AppDownload />}
+      {demo && <ScheduleDemo />}
       <main>
         <Hero />
-        <Trail />
-        <Lengths />
-        <Included />
-        <Guides />
-        <WhenToGo />
-        <FAQ />
+        <Pricing />
+        <HowItWorks />
+        <Pillars />
+        <Solutions />
+        <Strengths />
+        <Partners />
       </main>
       <Footer />
     </>

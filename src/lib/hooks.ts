@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import type { Trek } from "../data/treks";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
 import { loadHeightmap, type Heightmap } from "./terrain";
-import { buildRoute, type RouteGeometry } from "./route";
 
 export function useHeightmap(id: string): Heightmap | null {
   const [hm, setHm] = useState<Heightmap | null>(null);
@@ -15,39 +14,6 @@ export function useHeightmap(id: string): Heightmap | null {
   return hm;
 }
 
-const routeCache = new Map<string, RouteGeometry>();
-
-export function getRoute(trek: Trek, hm: Heightmap): RouteGeometry {
-  let r = routeCache.get(trek.id);
-  if (!r) {
-    r = buildRoute(trek, hm);
-    routeCache.set(trek.id, r);
-  }
-  return r;
-}
-
-/** Heightmap + draped route for one trek; null while loading. */
-export function useRoute(trek: Trek): { hm: Heightmap; route: RouteGeometry } | null {
-  const hm = useHeightmap(trek.id);
-  if (!hm) return null;
-  return { hm, route: getRoute(trek, hm) };
-}
-
-/** Load all treks' routes up-front (for the comparison UI). */
-export function useAllRoutes(treks: Trek[]) {
-  const [routes, setRoutes] = useState<Record<string, RouteGeometry>>({});
-  useEffect(() => {
-    let live = true;
-    Promise.all(treks.map((t) => loadHeightmap(t.id).then((hm) => [t.id, getRoute(t, hm)] as const))).then(
-      (entries) => live && setRoutes(Object.fromEntries(entries)),
-    );
-    return () => {
-      live = false;
-    };
-  }, [treks]);
-  return routes;
-}
-
 export function useMedia(query: string) {
   const [m, setM] = useState(() => (typeof window !== "undefined" ? window.matchMedia(query).matches : false));
   useEffect(() => {
@@ -57,4 +23,84 @@ export function useMedia(query: string) {
     return () => mq.removeEventListener("change", on);
   }, [query]);
   return m;
+}
+
+/** Typewriter rotation through a list of words. */
+export function useTyped(words: string[], { type = 110, back = 55, hold = 1700, start = 500 } = {}) {
+  const [text, setText] = useState("");
+  const key = words.join("|");
+  useEffect(() => {
+    let w = 0,
+      i = 0,
+      deleting = false,
+      timer = 0;
+    const tick = () => {
+      const word = words[w];
+      if (!deleting) {
+        i++;
+        setText(word.slice(0, i));
+        if (i >= word.length) {
+          deleting = true;
+          timer = window.setTimeout(tick, hold);
+          return;
+        }
+        timer = window.setTimeout(tick, type);
+      } else {
+        i--;
+        setText(word.slice(0, i));
+        if (i <= 0) {
+          deleting = false;
+          w = (w + 1) % words.length;
+        }
+        timer = window.setTimeout(tick, back);
+      }
+    };
+    timer = window.setTimeout(tick, start);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, type, back, hold, start]);
+  return text;
+}
+
+/** Fires once when the element scrolls into view. */
+export function useInView<T extends Element>(rootMargin = "-10% 0px") {
+  const ref = useRef<T>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || seen) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setSeen(true);
+          obs.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [rootMargin, seen]);
+  return [ref, seen] as const;
+}
+
+/** Tweens a number into a span when `go` becomes true. */
+export function useCountUp(target: number, go: boolean, format: (n: number) => string, duration = 1.6) {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!go || !ref.current) return;
+    const o = { v: 0 };
+    const tw = gsap.to(o, {
+      v: target,
+      duration,
+      ease: "power3.out",
+      onUpdate: () => {
+        if (ref.current) ref.current.textContent = format(o.v);
+      },
+    });
+    return () => {
+      tw.kill();
+    };
+  }, [go, target, format, duration]);
+  return ref;
 }

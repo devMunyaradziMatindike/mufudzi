@@ -1,5 +1,5 @@
 {
-  "name": "foldline",
+  "name": "digitanimal",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -21,18 +21,14 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
-    "@types/geojson": "^7946.0.16",
     "@types/node": "^22.10.0",
     "@types/pngjs": "^6.0.5",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/three": "^0.170.0",
-    "@types/topojson-client": "^3.1.5",
-    "@types/topojson-specification": "^1.0.5",
     "@vitejs/plugin-react": "^4.3.4",
     "pngjs": "^7.0.0",
     "tailwindcss": "^4.0.0",
-    "topojson-client": "^3.1.0",
     "tsx": "^4.19.2",
     "typescript": "~5.6.3",
     "vite": "^6.0.3"

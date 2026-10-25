@@ -1,7 +1,6 @@
 /**
- * Bake per-trek heightmaps from the public AWS Terrain Tiles dataset
- * (Terrarium PNG encoding, no API key) into public/terrain/<id>.png + .json,
- * and the Natural Earth land outlines into public/world/land.json.
+ * Bake heightmaps from the public AWS Terrain Tiles dataset (Terrarium PNG
+ * encoding, no API key) into public/terrain/<id>.png + .json.
  *
  *   npm run bake:terrain
  *
@@ -9,15 +8,8 @@
  */
 import { mkdir, readFile, writeFile, access } from "node:fs/promises";
 import { PNG } from "pngjs";
-import * as topojson from "topojson-client";
-import type { Topology, GeometryCollection } from "topojson-specification";
-import { TREKS } from "../src/data/treks";
-import {
-  boundsOf,
-  mercator,
-  boundsWidthMetres,
-  boundsHeightMetres,
-} from "../src/lib/geo";
+import { REGIONS } from "../src/data/regions";
+import { boundsFromCenter, mercator, boundsWidthMetres, boundsHeightMetres } from "../src/lib/geo";
 
 const TILE_URL = (z: number, x: number, y: number) =>
   `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/${z}/${x}/${y}.png`;
@@ -51,12 +43,11 @@ async function fetchTile(z: number, x: number, y: number): Promise<PNG> {
   return PNG.sync.read(buf);
 }
 
-async function bakeTrek(trek: (typeof TREKS)[number]) {
-  const bounds = boundsOf(trek.path, 0.22);
+async function bakeRegion(region: (typeof REGIONS)[number]) {
+  const bounds = boundsFromCenter(region.center, region.sizeKm);
   const [mx0, my0] = mercator([bounds.west, bounds.north]);
   const [mx1, my1] = mercator([bounds.east, bounds.south]);
   const fracW = mx1 - mx0;
-  // pick the zoom at which the box spans ≈ OUT_SIZE source pixels
   const zoom = Math.min(MAX_ZOOM, Math.max(1, Math.round(Math.log2(OUT_SIZE / (256 * fracW)))));
   const world = 256 * 2 ** zoom;
   const px0 = mx0 * world,
@@ -84,17 +75,12 @@ async function bakeTrek(trek: (typeof TREKS)[number]) {
           for (let y = 0; y < 256; y++)
             for (let x = 0; x < 256; x++) {
               const i = (y * 256 + x) * 4;
-              mosaic[(oy + y) * mosaicW + ox + x] = decode(
-                png.data[i],
-                png.data[i + 1],
-                png.data[i + 2],
-              );
+              mosaic[(oy + y) * mosaicW + ox + x] = decode(png.data[i], png.data[i + 1], png.data[i + 2]);
             }
         }),
       );
   await Promise.all(jobs);
 
-  // crop + resample to OUT_SIZE x OUT_H (mercator box is square-ish)
   const outW = OUT_SIZE;
   const outH = Math.round((OUT_SIZE * (py1 - py0)) / (px1 - px0));
   const out = new Float32Array(outW * outH);
@@ -117,7 +103,6 @@ async function bakeTrek(trek: (typeof TREKS)[number]) {
     for (let x = 0; x < outW; x++) {
       const sx = px0 - tx0 * 256 + ((x + 0.5) / outW) * (px1 - px0);
       const sy = py0 - ty0 * 256 + ((y + 0.5) / outH) * (py1 - py0);
-      // clamp bathymetry to sea level and keep 1 m precision (compresses far better)
       const h = Math.max(0, Math.round(sample(sx, sy)));
       out[y * outW + x] = h;
       minEle = Math.min(minEle, h);
@@ -129,13 +114,12 @@ async function bakeTrek(trek: (typeof TREKS)[number]) {
     const v = out[i] + 32768;
     const r = Math.floor(v / 256);
     const g = Math.floor(v - r * 256);
-    const b = 0;
     png.data[i * 4] = r;
     png.data[i * 4 + 1] = g;
-    png.data[i * 4 + 2] = b;
+    png.data[i * 4 + 2] = 0;
     png.data[i * 4 + 3] = 255;
   }
-  await writeFile(`${OUT}/${trek.id}.png`, PNG.sync.write(png));
+  await writeFile(`${OUT}/${region.id}.png`, PNG.sync.write(png));
   const meta = {
     ...bounds,
     width: outW,
@@ -147,32 +131,12 @@ async function bakeTrek(trek: (typeof TREKS)[number]) {
     zoom,
     source: "AWS Terrain Tiles (Mapzen Terrarium), https://registry.opendata.aws/terrain-tiles/",
   };
-  await writeFile(`${OUT}/${trek.id}.json`, JSON.stringify(meta, null, 2));
+  await writeFile(`${OUT}/${region.id}.json`, JSON.stringify(meta, null, 2));
   console.log(
-    `${trek.id.padEnd(12)} z${zoom} ${tilesW}x${tilesH} tiles -> ${outW}x${outH}  ${meta.minEle}–${meta.maxEle} m  ${(meta.widthM / 1000).toFixed(1)} km wide`,
+    `${region.id.padEnd(10)} z${zoom} ${tilesW}x${tilesH} tiles -> ${outW}x${outH}  ${meta.minEle}–${meta.maxEle} m  ${(meta.widthM / 1000).toFixed(1)} km wide`,
   );
-}
-
-async function bakeWorld() {
-  const file = "public/world/land.json";
-  if (await exists(file)) return;
-  const res = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json");
-  const topo = (await res.json()) as Topology<{ land: GeometryCollection }>;
-  const land = topojson.feature(topo, topo.objects.land);
-  // keep only coordinate rings, rounded, to keep the file small
-  const rings: number[][][] = [];
-  for (const f of land.features) {
-    const g = f.geometry;
-    const polys = g.type === "Polygon" ? [g.coordinates] : g.type === "MultiPolygon" ? g.coordinates : [];
-    for (const poly of polys)
-      for (const ring of poly) rings.push(ring.map(([x, y]) => [+x.toFixed(2), +y.toFixed(2)]));
-  }
-  await mkdir("public/world", { recursive: true });
-  await writeFile(file, JSON.stringify(rings));
-  console.log(`world        ${rings.length} land rings`);
 }
 
 await mkdir(CACHE, { recursive: true });
 await mkdir(OUT, { recursive: true });
-await bakeWorld();
-for (const trek of TREKS) await bakeTrek(trek);
+for (const region of REGIONS) await bakeRegion(region);
