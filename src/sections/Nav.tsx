@@ -3,7 +3,7 @@ import { Logo } from "../components/ui";
 import { scrollTo } from "../lib/smooth-scroll";
 
 const LINKS: { id: string; label: string; href?: string; button?: boolean }[] = [
-  { id: "vision", label: "Vision" },
+  { id: "pricing", label: "Get Price Quote" },
   { id: "tracker", label: "Tracker" },
   { id: "pricing", label: "Pricing" },
   { id: "app", label: "Mobile App", href: "#download" },
@@ -46,9 +46,9 @@ export function Nav() {
       <div className={`transition-colors duration-300 ${solid || overlay ? "bg-white/95 shadow-[0_1px_0_#e4e8de] backdrop-blur-md" : ""}`}>
         <div className="mx-auto flex h-[68px] max-w-[1280px] items-center justify-between gap-6 px-6">
           <Logo />
-          <nav className="hidden items-center gap-7 text-[14px] font-semibold text-grey lg:flex" aria-label="Main">
+          <nav className="hidden items-center gap-7 rounded-full border border-green px-4 text-[14px] font-semibold text-grey lg:flex" aria-label="Main">
             {LINKS.map((l) => (
-              <NavLink key={l.id} link={l} className="transition hover:text-green-dark" onGo={go} onClose={() => setOpen(false)} />
+              <NavLink key={l.label} link={l} className="transition hover:text-green-dark" onGo={go} onClose={() => setOpen(false)} />
             ))}
           </nav>
           <div className="flex items-center gap-3">
@@ -58,9 +58,9 @@ export function Nav() {
           </div>
         </div>
         {open && (
-          <nav className="border-t border-line bg-white px-6 py-4 lg:hidden" aria-label="Mobile">
+          <nav className="mx-6 mb-4 rounded-2xl border border-green bg-white px-6 py-4 lg:hidden" aria-label="Mobile">
             {LINKS.map((l) => (
-              <NavLink key={l.id} link={l} className="block py-2 font-semibold" onGo={go} onClose={() => setOpen(false)} />
+              <NavLink key={l.label} link={l} className="block py-2 font-semibold" onGo={go} onClose={() => setOpen(false)} />
             ))}
           </nav>
         )}

@@ -45,6 +45,9 @@ export function Hero() {
               <a href={CONTACT.whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-green">
                 <Icon.WhatsApp /> Inquire on WhatsApp
               </a>
+              <a href={`tel:${CONTACT.phoneIntl}`} className="btn btn-green">
+                <Icon.Phone /> Call
+              </a>
               <a href="#tracker" onClick={(e) => (e.preventDefault(), scrollTo("#tracker"))} className="btn btn-ghost">
                 See the tracker
               </a>

@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { PRICING } from "../data/content";
 import { Section, SectionHead } from "../components/ui";
+import type { DocumentKind } from "../lib/quote-pdf";
+import { QuoteDialog } from "./QuoteDialog";
 
 const money = (n: number) => n.toLocaleString("en-US");
 
 export function Pricing() {
   const [raw, setRaw] = useState("10");
+  const [documentKind, setDocumentKind] = useState<DocumentKind | null>(null);
   const parsed = Math.floor(Number(raw));
   const count = Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
   const hardware = count * PRICING.tracker;
@@ -87,6 +90,17 @@ export function Pricing() {
           </div>
         </div>
       </div>
+      <div className="mt-8 flex flex-wrap gap-3">
+        <button type="button" className="btn btn-green" onClick={() => setDocumentKind("quote")}>
+          Generate Quote
+        </button>
+        <button type="button" className="btn btn-green" onClick={() => setDocumentKind("invoice")}>
+          Generate Invoice
+        </button>
+      </div>
+      {documentKind && (
+        <QuoteDialog initialTrackers={count || 1} kind={documentKind} onClose={() => setDocumentKind(null)} />
+      )}
     </Section>
   );
 }
