@@ -208,17 +208,18 @@ export async function buildQuote(
   const right = pageWidth - 16;
   const width = right - left;
 
+  doc.setFont("Teachers", "bold");
+  doc.setFontSize(16);
+  doc.setTextColor(...GREEN);
+  doc.text(kind === "invoice" ? "FISCAL TAX INVOICE" : "QUOTATION", pageWidth / 2, 14, { align: "center" });
+
   const logoSize = 24;
-  doc.addImage(`data:image/png;base64,${logo}`, "PNG", left, 14, logoSize, logoSize);
+  const logoY = 28;
+  doc.addImage(`data:image/png;base64,${logo}`, "PNG", left, logoY, logoSize, logoSize);
   doc.setFont("HomemadeApple", "normal");
   doc.setFontSize(8);
   doc.setTextColor(...GREEN);
-  doc.text(MOTTO, left, 44);
-
-  doc.setFont("Teachers", "bold");
-  doc.setFontSize(14);
-  doc.setTextColor(...GREEN);
-  doc.text(kind === "invoice" ? "FISCAL TAX INVOICE" : "QUOTATION", pageWidth / 2, 52, { align: "center" });
+  doc.text(MOTTO, left, logoY + logoSize + 4);
 
   const dateLabel = issued.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   const validUntil = addDays(issued, 7).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
@@ -227,7 +228,7 @@ export async function buildQuote(
     ["DATE", dateLabel],
     ...(kind === "invoice" ? [["VALID UNTIL", validUntil] as [string, string]] : []),
   ];
-  let metaY = 20;
+  let metaY = 32;
   meta.forEach(([label, value]) => {
     doc.setFont("Teachers", "bold");
     doc.setFontSize(9);
@@ -239,7 +240,7 @@ export async function buildQuote(
     metaY += 6;
   });
 
-  const partyY = 62;
+  const partyY = 72;
   doc.setFont("Teachers", "bold");
   doc.setFontSize(10);
   doc.setTextColor(...GREEN);
