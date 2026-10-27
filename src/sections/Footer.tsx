@@ -30,7 +30,7 @@ export function Footer() {
           <div className="lg:col-span-5">
             <Logo light />
             <p className="mt-5 max-w-[360px] text-sm leading-relaxed text-white/60">
-              Mufudzi is an official product of Musikawedu. Compact GF-JRD-09 GPS locator for cattle, sheep, goats and
+              Mufudzi is an official product of Musikawedu. Mufudzi GPS locator for cattle, sheep, goats and
               horses. From pasture to pixel — tracking Africa’s livestock and game-park wildlife by 2045.
             </p>
           </div>

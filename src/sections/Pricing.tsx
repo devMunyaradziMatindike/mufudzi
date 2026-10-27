@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PRICING } from "../data/content";
 import { Section, SectionHead } from "../components/ui";
 import type { DocumentKind } from "../lib/quote-pdf";
@@ -15,6 +15,15 @@ export function Pricing() {
   const monthly = count * PRICING.license;
 
   const setCount = (next: number) => setRaw(String(Math.max(1, next)));
+
+  useEffect(() => {
+    const onSet = (event: Event) => {
+      const next = (event as CustomEvent<number>).detail;
+      if (Number.isFinite(next) && next > 0) setRaw(String(Math.floor(next)));
+    };
+    window.addEventListener("mufudzi:set-trackers", onSet);
+    return () => window.removeEventListener("mufudzi:set-trackers", onSet);
+  }, []);
 
   return (
     <Section id="pricing">

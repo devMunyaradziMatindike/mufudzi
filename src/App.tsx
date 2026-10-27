@@ -6,6 +6,7 @@ import { Pillars } from "./sections/Pillars";
 import { Solutions } from "./sections/Solutions";
 import { Strengths } from "./sections/Strengths";
 import { Pricing } from "./sections/Pricing";
+import { TrackerGuide } from "./sections/TrackerGuide";
 import { HowItWorks } from "./sections/HowItWorks";
 import { Partners } from "./sections/Partners";
 import { Footer } from "./sections/Footer";
@@ -30,6 +31,7 @@ export default function App() {
       <main>
         <Hero />
         <Pricing />
+        <TrackerGuide />
         <HowItWorks />
         <Pillars />
         <Solutions />
