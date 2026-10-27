@@ -71,9 +71,14 @@ export function Footer() {
         </div>
         <div className="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45">
           <span>© {new Date().getFullYear()} Mufudzi · an official product of Musikawedu</span>
-          <a href="#terms" className="hover:text-white">
-            Terms and conditions
-          </a>
+          <div className="flex flex-wrap gap-4">
+            <a href="#terms" className="hover:text-white">
+              Terms and conditions
+            </a>
+            <a href="#privacy" className="hover:text-white">
+              Privacy policy
+            </a>
+          </div>
         </div>
       </div>
     </footer>

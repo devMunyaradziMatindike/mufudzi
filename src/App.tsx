@@ -14,12 +14,14 @@ import { AppDownload, useDownloadScreen } from "./sections/AppDownload";
 import { ScheduleDemo, useDemoScreen } from "./sections/ScheduleDemo";
 import { CeoRemarks, useRemarksScreen } from "./sections/CeoRemarks";
 import { Terms, useTermsScreen } from "./sections/Terms";
+import { Privacy, usePrivacyScreen } from "./sections/Privacy";
 
 export default function App() {
   const download = useDownloadScreen();
   const demo = useDemoScreen();
   const remarks = useRemarksScreen();
   const terms = useTermsScreen();
+  const privacy = usePrivacyScreen();
   useEffect(() => {
     startSmoothScroll();
   }, []);
@@ -31,6 +33,7 @@ export default function App() {
       {demo && <ScheduleDemo />}
       {remarks && <CeoRemarks />}
       {terms && <Terms />}
+      {privacy && <Privacy />}
       <main>
         <Hero />
         <TrackerGuide />
