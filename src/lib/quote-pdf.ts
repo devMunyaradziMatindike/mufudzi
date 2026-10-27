@@ -175,9 +175,9 @@ export async function buildQuote(
   const rate = details.rate;
   const unit = PRICING.tracker * rate;
   const total = qty * unit;
-  const grossCents = Math.round(total * 100);
-  const vatCents = kind === "invoice" ? Math.round((grossCents * 155) / 1155) : 0;
-  const netCents = grossCents - vatCents;
+  const netCents = Math.round(total * 100);
+  const vatCents = kind === "invoice" ? Math.round((netCents * 155) / 1000) : 0;
+  const grossCents = netCents + vatCents;
   const gross = grossCents / 100;
   const vat = vatCents / 100;
   const net = netCents / 100;

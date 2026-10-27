@@ -95,7 +95,7 @@ export function ProductArt({ kind }: { kind: ArtKind }) {
           <rect x="40" y="128" width="240" height="16" rx="4" fill="#565656" />
           <rect x="48" y="118" width="224" height="12" rx="3" fill="#8f8f8f" />
           <rect x="120" y="60" width="86" height="42" rx="6" fill="#1f261a" />
-          <text x="163" y="88" textAnchor="middle" fontSize="20" fontWeight="700" fill="#82b718" fontFamily="Teachers">
+          <text x="163" y="88" textAnchor="middle" fontSize="20" fontWeight="700" fill="#82b718" fontFamily="Pangolin">
             512 kg
           </text>
           <path d="M60 118 V80 h12 V118" fill="#565656" />
