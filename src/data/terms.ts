@@ -16,7 +16,7 @@ Mufudzi assists with locating animals and managing their movement. It does not p
 1 Parties and supplier information
 1.1 Mufudzi is a product offered through Musikawedu at https://musikawedu.com. In these terms, “we”, “us” and “our” mean the legal supplier identified below, trading through Musikawedu. “You” means the purchaser identified in the Order Schedule and, where relevant, an authorised user.
 
-1.2 Legal supplier name and legal form: [insert full registered name and legal form]. Company registration number and place of registration: [insert]. Directors or other office bearers: [insert]. Registered address: [insert]. Trading address: Farm 42, Coburn Estate, Chegutu, Zimbabwe. Address for service of legal documents: Farm 42, Coburn Estate, Chegutu, Zimbabwe.
+1.2 Legal supplier name and legal form: Nesso Systems Pvt Ltd, a private limited company. Company registration number and place of registration: 48567A0662025, Zimbabwe. Directors or other office bearers: Munyaradzi Matindike and Tatenda Beta. Registered address: Farm 42, Coburn Estate, Chegutu, Zimbabwe. Trading address: Farm 42, Coburn Estate, Chegutu, Zimbabwe. Address for service of legal documents: Farm 42, Coburn Estate, Chegutu, Zimbabwe.
 
 1.3 Product website: https://musikawedu.com/mufudzi. Customer service email: info@nessosystems.co.zw. Telephone and WhatsApp: +263 77 498 4359. Privacy contact or data protection officer: info@nessosystems.co.zw. Memberships, accreditation bodies, applicable codes of conduct and alternative dispute resolution schemes, with contact details and links: none.
 
