@@ -27,7 +27,7 @@ export function CeoRemarks() {
           <div>
             <p className="eyebrow">CEO&apos;s Remarks</p>
             <h1 className="mt-3 text-[clamp(32px,4vw,48px)] font-bold leading-tight tracking-tight text-ink">
-              From the Founder&apos;s Desk
+              From the Co-Founder&apos;s Desk
             </h1>
           </div>
           <img

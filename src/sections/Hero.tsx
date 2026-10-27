@@ -31,7 +31,7 @@ export function Hero() {
               From pasture to pixel — tracking Africa’s cattle, sheep, goats and horses, and the wildlife in its game parks, by 2045.
             </p>
             <p className="mt-4 text-[15px] leading-relaxed text-grey">
-              Compact GF-JRD-09 GPS locator for cattle, sheep, goats and horses — multi-mode positioning, smart fence
+              Mufudzi Ear tag GPS locator for cattle, sheep, goats and horses — multi-mode positioning, smart fence
               alerts, solar charging.
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
