@@ -12,7 +12,7 @@ const LINKS: { id: string; label: string; href?: string; button?: boolean }[] = 
   { id: "demo", label: "Schedule live demo", href: "#demo", button: true },
 ];
 
-const OVERLAYS = ["#download", "#demo", "#remarks"];
+const OVERLAYS = ["#download", "#demo", "#remarks", "#terms"];
 
 export function Nav() {
   const [solid, setSolid] = useState(false);
