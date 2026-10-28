@@ -36,11 +36,11 @@ export default function App() {
       {privacy && <Privacy />}
       <main>
         <Hero />
-        <TrackerGuide />
-        <Pricing />
+        <Solutions />
         <HowItWorks />
         <Pillars />
-        <Solutions />
+        <TrackerGuide />
+        <Pricing />
         <Strengths />
         <Partners />
       </main>

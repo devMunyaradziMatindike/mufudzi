@@ -6,7 +6,7 @@ export function Logo({ className = "", light = false }: { className?: string; li
       <span className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-[#f7f6f1]">
         <img src="/images/mufudzi-logo.jpg" alt="" className="h-[148%] w-[148%] max-w-none object-cover" />
       </span>
-      <span className={`text-[22px] font-bold tracking-tight ${light ? "text-white" : "text-ink"}`}>
+      <span className={`logo-word text-[22px] font-bold tracking-tight ${light ? "text-white" : "text-ink"}`}>
         mufu<span className="text-green">dzi</span>
       </span>
     </a>

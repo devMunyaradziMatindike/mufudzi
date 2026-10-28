@@ -1,14 +1,14 @@
 import { useMedia } from "../lib/hooks";
 import { Icon } from "../components/ui";
 import { scrollTo } from "../lib/smooth-scroll";
-import { ANIMALS, CONTACT } from "../data/content";
+import { CONTACT } from "../data/content";
 
 export function Hero() {
   const reduceMotion = useMedia("(prefers-reduced-motion: reduce)");
 
   return (
     <section id="top" className="relative">
-      <div className="relative h-[92svh] min-h-[680px] overflow-hidden bg-[#e7e2d6]">
+      <div className="relative h-[min(92svh,820px)] min-h-[560px] overflow-hidden bg-[#e7e2d6] md:min-h-[640px]">
         <video
           className="absolute inset-0 h-full w-full object-cover"
           src="/mufudzi.mp4"
@@ -24,7 +24,7 @@ export function Hero() {
 
         <div className="relative mx-auto flex h-full max-w-[1280px] flex-col justify-center px-6 pb-16 pt-24">
           <div className="max-w-[640px]">
-            <h1 className="text-[clamp(36px,5vw,60px)] font-bold leading-[1.02] tracking-tight text-ink">
+            <h1 className="font-display text-[clamp(36px,5vw,60px)] font-bold leading-[1.02] tracking-tight text-ink">
               Mufudzi. 1.38 billion livestock. One digital shepherd.
             </h1>
             <p className="mt-6 text-lg leading-relaxed text-grey md:text-xl">
@@ -34,18 +34,11 @@ export function Hero() {
               Mufudzi Ear tag GPS locator for cattle, sheep, goats and horses — multi-mode positioning, smart fence
               alerts, solar charging.
             </p>
-            <ul className="mt-6 flex flex-wrap gap-2">
-              {ANIMALS.map((a) => (
-                <li key={a} className="rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-ink ring-1 ring-line">
-                  {a}
-                </li>
-              ))}
-            </ul>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a href={CONTACT.whatsappUrl} target="_blank" rel="noreferrer" className="btn btn-green">
                 <Icon.WhatsApp /> Inquire on WhatsApp
               </a>
-              <a href={`tel:${CONTACT.phoneIntl}`} className="btn btn-green">
+              <a href={`tel:${CONTACT.phoneIntl}`} className="btn btn-ghost">
                 <Icon.Phone /> Call
               </a>
               <a href="#tracker" onClick={(e) => (e.preventDefault(), scrollTo("#tracker"))} className="btn btn-ghost">

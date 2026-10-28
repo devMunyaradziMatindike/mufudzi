@@ -6,6 +6,7 @@ const COLS: [string, [string, string][]][] = [
     "Tracker",
     [
       ["See the tracker", "#tracker"],
+      ["Herd guide", "#tracker-guide"],
       ["Pricing", "#pricing"],
       ["Why Mufudzi", "#why"],
       ["Vision 2045", "#vision"],
@@ -69,13 +70,13 @@ export function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-14 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45">
-          <span>© {new Date().getFullYear()} Mufudzi · an official product of Musikawedu</span>
-          <div className="flex flex-wrap gap-4">
-            <a href="#terms" className="hover:text-white">
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
+          <span className="text-sm text-white/55">© {new Date().getFullYear()} Mufudzi · an official product of Musikawedu</span>
+          <div className="flex flex-wrap gap-5 text-sm font-semibold text-white/80">
+            <a href="#terms" className="underline-offset-4 hover:text-white hover:underline">
               Terms and conditions
             </a>
-            <a href="#privacy" className="hover:text-white">
+            <a href="#privacy" className="underline-offset-4 hover:text-white hover:underline">
               Privacy policy
             </a>
           </div>
