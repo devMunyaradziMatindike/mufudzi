@@ -12,9 +12,6 @@ const HERDS = [
 
 type HerdId = (typeof HERDS)[number]["id"];
 
-const field =
-  "demo-field mt-1.5 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm font-medium outline-none focus:border-green focus:ring-2 focus:ring-green/20";
-
 function neededTrackers(animals: number, perTracker: number) {
   if (!Number.isFinite(animals) || animals <= 0) return 0;
   return Math.max(1, Math.ceil(animals / perTracker));
@@ -28,6 +25,9 @@ export function TrackerGuide() {
   const herd = HERDS.find((h) => h.id === herdId) ?? HERDS[0];
   const animals = Math.floor(Number(raw));
   const ready = Number.isFinite(animals) && animals > 0;
+  const preview = ready ? neededTrackers(animals, herd.perTracker) : 0;
+
+  const setAnimals = (next: number) => setRaw(String(Math.max(1, next)));
 
   const applyToPricing = (trackers: number) => {
     window.dispatchEvent(new CustomEvent("mufudzi:set-trackers", { detail: trackers }));
@@ -42,39 +42,81 @@ export function TrackerGuide() {
       </SectionHead>
 
       <form
-        className="mt-12 max-w-[520px] space-y-5"
+        className="mt-12 max-w-[640px] space-y-8"
         onSubmit={(e) => {
           e.preventDefault();
           if (!ready) return;
-          setResult(neededTrackers(animals, herd.perTracker));
+          setResult(preview);
         }}
       >
-        <label className="block text-sm font-semibold text-ink">
-          Herd type
-          <select
-            value={herdId}
-            onChange={(e) => setHerdId(e.target.value as HerdId)}
-            className={field}
-          >
-            {HERDS.map((h) => (
-              <option key={h.id} value={h.id}>
-                {h.label} (1 tracker : {h.perTracker} animals)
-              </option>
-            ))}
-          </select>
+        <fieldset>
+          <legend className="text-sm font-bold uppercase tracking-wider text-grey">Herd type</legend>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+            {HERDS.map((h) => {
+              const selected = h.id === herdId;
+              return (
+                <button
+                  key={h.id}
+                  type="button"
+                  aria-pressed={selected}
+                  onClick={() => setHerdId(h.id)}
+                  className={`rounded-2xl border px-4 py-4 text-left transition ${
+                    selected
+                      ? "border-green bg-green-soft shadow-[0_8px_24px_-16px_rgba(130,183,24,0.9)]"
+                      : "border-line bg-white hover:border-green"
+                  }`}
+                >
+                  <span className="block text-[15px] font-bold text-ink">{h.label}</span>
+                  <span className={`mt-1 block text-sm ${selected ? "text-green-dark" : "text-grey"}`}>
+                    1 tracker : {h.perTracker} animals
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </fieldset>
+
+        <label className="block">
+          <span className="text-sm font-bold uppercase tracking-wider text-grey">Number of animals</span>
+          <div className="mt-3 flex items-center gap-3 rounded-2xl border border-line bg-white px-3 py-3 focus-within:border-green focus-within:ring-2 focus-within:ring-green/20">
+            <button
+              type="button"
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line text-2xl leading-none transition hover:border-green hover:text-green-dark"
+              aria-label="Fewer animals"
+              onClick={() => setAnimals((Number.isFinite(animals) ? animals : 1) - 1)}
+            >
+              −
+            </button>
+            <input
+              required
+              inputMode="numeric"
+              min={1}
+              value={raw}
+              aria-label="Number of animals"
+              onChange={(e) => setRaw(e.target.value.replace(/[^\d]/g, ""))}
+              className="num w-full bg-transparent text-center text-5xl font-bold tracking-tight text-ink outline-none [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            />
+            <button
+              type="button"
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line text-2xl leading-none transition hover:border-green hover:text-green-dark"
+              aria-label="More animals"
+              onClick={() => setAnimals((Number.isFinite(animals) && animals > 0 ? animals : 0) + 1)}
+            >
+              +
+            </button>
+          </div>
+          <p className="mt-2 text-sm text-grey">We’ll round up to whole trackers.</p>
         </label>
 
-        <label className="block text-sm font-semibold text-ink">
-          Number of animals
-          <input
-            required
-            inputMode="numeric"
-            min={1}
-            value={raw}
-            onChange={(e) => setRaw(e.target.value.replace(/[^\d]/g, ""))}
-            className={field}
-          />
-        </label>
+        {ready && (
+          <p className="text-[17px] leading-relaxed text-ink">
+            About{" "}
+            <span className="font-bold text-green-dark">
+              {preview} {preview === 1 ? "tracker" : "trackers"}
+            </span>{" "}
+            for {animals.toLocaleString("en-US")} {herd.label.toLowerCase()}.
+          </p>
+        )}
 
         <button type="submit" className="btn btn-green" disabled={!ready}>
           Calculate trackers
