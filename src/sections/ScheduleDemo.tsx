@@ -261,7 +261,7 @@ export function ScheduleDemo() {
             )}
             {selected && time && (
               <form
-                className="mt-5 space-y-3 rounded-2xl bg-surface p-4"
+                className="mt-5 space-y-5 rounded-2xl border border-line bg-white p-5"
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (ready) window.open(whatsapp, "_blank", "noopener,noreferrer");
@@ -271,34 +271,42 @@ export function ScheduleDemo() {
                   {longDate(selected)}
                   <span className="mt-0.5 block font-medium text-grey">{time} · Harare time</span>
                 </p>
-                <label className="block text-sm font-semibold text-ink">
-                  Name
+                <label className="block">
+                  <span className="text-sm font-bold uppercase tracking-wider text-grey">Name</span>
                   <input
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="demo-field mt-1.5 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm font-medium outline-none focus:border-green focus:ring-2 focus:ring-green/20"
+                    placeholder="Your full name"
+                    className="demo-field mt-2 w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-[15px] font-medium outline-none transition focus:border-green focus:bg-white focus:ring-2 focus:ring-green/20"
                     autoComplete="name"
                   />
                 </label>
-                <label className="block text-sm font-semibold text-ink">
-                  What do you want to track?
-                  <select
-                    required
-                    value={animal}
-                    onChange={(e) => setAnimal(e.target.value)}
-                    className="mt-1.5 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm font-medium outline-none focus:border-green focus:ring-2 focus:ring-green/20"
-                  >
-                    <option value="">Select</option>
-                    {ANIMALS.map((a) => (
-                      <option key={a} value={a}>
-                        {a}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label className="relative block text-sm font-semibold text-ink">
-                  Location
+                <fieldset>
+                  <legend className="text-sm font-bold uppercase tracking-wider text-grey">What do you want to track?</legend>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {ANIMALS.map((a) => {
+                      const selectedAnimal = animal === a;
+                      return (
+                        <button
+                          key={a}
+                          type="button"
+                          aria-pressed={selectedAnimal}
+                          onClick={() => setAnimal(a)}
+                          className={`rounded-full border px-3.5 py-2 text-sm font-semibold transition ${
+                            selectedAnimal
+                              ? "border-green bg-green text-white shadow-[0_8px_18px_-8px_rgba(130,183,24,0.9)]"
+                              : "border-line bg-surface text-ink hover:border-green hover:bg-green-soft"
+                          }`}
+                        >
+                          {a}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </fieldset>
+                <label className="relative block">
+                  <span className="text-sm font-bold uppercase tracking-wider text-grey">Location</span>
                   <input
                     required
                     value={location}
@@ -307,6 +315,7 @@ export function ScheduleDemo() {
                     aria-controls="demo-places"
                     aria-autocomplete="list"
                     aria-activedescendant={showPlaces ? `demo-place-${placeActive}` : undefined}
+                    placeholder="Start typing a place in Zimbabwe"
                     onChange={(e) => {
                       setLocation(e.target.value);
                       setPlaceOpen(true);
@@ -331,11 +340,11 @@ export function ScheduleDemo() {
                         setPlaceOpen(false);
                       }
                     }}
-                    className="demo-field mt-1.5 w-full rounded-xl border border-line bg-white px-3 py-2.5 text-sm font-medium outline-none focus:border-green focus:ring-2 focus:ring-green/20"
+                    className="demo-field mt-2 w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-[15px] font-medium outline-none transition focus:border-green focus:bg-white focus:ring-2 focus:ring-green/20"
                     autoComplete="off"
                   />
                   {showPlaces && (
-                    <ul id="demo-places" role="listbox" className="absolute left-0 right-0 top-full z-10 mt-1 overflow-hidden rounded-xl border border-line bg-white shadow-[0_16px_40px_-24px_rgba(31,38,26,0.45)]">
+                    <ul id="demo-places" role="listbox" className="absolute left-0 right-0 top-full z-10 mt-1 max-h-48 overflow-auto rounded-2xl border border-line bg-white shadow-[0_16px_40px_-24px_rgba(31,38,26,0.45)]">
                       {places.map((place, i) => (
                         <li key={place} role="presentation">
                           <button
@@ -343,7 +352,7 @@ export function ScheduleDemo() {
                             type="button"
                             role="option"
                             aria-selected={i === placeActive}
-                            className={`block w-full px-3 py-2 text-left text-sm font-medium ${i === placeActive ? "bg-green-soft text-ink" : "text-ink hover:bg-surface"}`}
+                            className={`block w-full px-4 py-2.5 text-left text-sm font-medium ${i === placeActive ? "bg-green-soft text-ink" : "text-ink hover:bg-surface"}`}
                             onMouseDown={(e) => e.preventDefault()}
                             onMouseEnter={() => setPlaceActive(i)}
                             onClick={() => {
@@ -358,6 +367,11 @@ export function ScheduleDemo() {
                     </ul>
                   )}
                 </label>
+                {ready ? (
+                  <p className="text-sm text-green-dark">Ready to send on WhatsApp.</p>
+                ) : (
+                  <p className="text-sm text-grey">Add your name, what you track, and a location to continue.</p>
+                )}
                 <a
                   href={ready ? whatsapp : undefined}
                   target="_blank"
