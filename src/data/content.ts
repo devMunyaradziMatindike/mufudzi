@@ -42,34 +42,22 @@ export const STATS = [
 
 export const PHOTOS = [
   {
-    src: "/images/mufudzi-ear.jpeg",
-    alt: "Cattle ear with Mufudzi GF-JRD-09 GPS livestock tracker",
+    src: "/images/mufudzi-device.jpg",
+    alt: "Mufudzi ear-tag GPS tracker front with solar panel",
+    title: "The tracker",
+    text: "Mufudzi ear-tag locator with solar panel and secure attachment loop.",
+  },
+  {
+    src: "/images/mufudzi-front-back.jpg",
+    alt: "Mufudzi tracker front with solar panel and back with charging contacts",
+    title: "Front and back",
+    text: "Solar face on the front and magnetic charging contacts on the back.",
+  },
+  {
+    src: "/images/mufudzi-on-ear.jpg",
+    alt: "Mufudzi ear-tag GPS tracker fitted on a cattle ear",
     title: "On the animal",
-    text: "Cattle ear with the Mufudzi GF-JRD-09 GPS livestock tracker.",
-  },
-  {
-    src: "/images/mufudzi-size.jpeg",
-    alt: "Mufudzi GF-JRD-09 tracker dimensions: 64 mm wide, 60 mm tall, 11.8 mm thick",
-    title: "Compact size",
-    text: "64 mm × 60 mm × 11.8 mm — light enough for everyday livestock wear.",
-  },
-  {
-    src: "/images/mufudzi-solar.jpeg",
-    alt: "Mufudzi tracker front with solar panel and back with magnetic charging contacts",
-    title: "Solar front and charging contacts",
-    text: "Visible solar panel and magnetic gold contacts on the back for charging.",
-  },
-  {
-    src: "/images/mufudzi-pin.jpeg",
-    alt: "Mufudzi tracker unit with yellow ear attachment pin",
-    title: "Ear-tag hardware",
-    text: "Main locator unit with yellow pin for secure ear attachment.",
-  },
-  {
-    src: "/images/mufudzi-modes.jpeg",
-    alt: "Mufudzi multi-mode positioning features including IP67, fence alarm and historical track",
-    title: "Multi-mode positioning",
-    text: "IP67, fence alarm, historical track, precise positioning, magnetic charging, power saving, multi-platform monitoring and multiple management.",
+    text: "Fitted on the ear for everyday livestock tracking.",
   },
 ];
 
