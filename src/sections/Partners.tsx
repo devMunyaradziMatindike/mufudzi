@@ -187,9 +187,7 @@ export function Partners() {
             rel="noreferrer"
             className="mt-8 inline-flex items-center gap-3 rounded-2xl border border-line bg-surface px-5 py-4 transition hover:border-green"
           >
-            <span className="grid h-12 w-12 place-items-center rounded-md bg-[#E30613] text-[15px] font-bold tracking-tight text-white" aria-hidden>
-              ISO
-            </span>
+            <img src="/images/iso-logo-red.svg" alt="" className="h-12 w-auto" aria-hidden />
             <span className="text-left">
               <span className="block text-sm font-bold uppercase tracking-wider text-grey">International Standard</span>
               <span className="mt-0.5 block text-[17px] font-bold text-ink">ISO 11785:2026</span>
