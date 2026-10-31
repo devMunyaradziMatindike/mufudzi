@@ -5,7 +5,8 @@ const COLS: [string, [string, string][]][] = [
   [
     "Tracker",
     [
-      ["See the tracker", "#tracker"],
+      ["Ear tag", "#tracker"],
+      ["LoRaWAN", "#lorawan"],
       ["Herd guide", "#tracker-guide"],
       ["Pricing", "#pricing"],
       ["Why Mufudzi", "#why"],
