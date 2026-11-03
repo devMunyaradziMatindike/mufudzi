@@ -11,8 +11,8 @@
   --color-surface: #f4f6f0;
   --color-orange: #ff6900;
   --color-night: #0a1222;
-  --font-sans: "Teachers", system-ui, -apple-system, sans-serif;
-  --font-display: "Pangolin", "Teachers", system-ui, sans-serif;
+  --font-sans: "Londrina Solid", system-ui, -apple-system, sans-serif;
+  --font-display: "Londrina Solid", system-ui, -apple-system, sans-serif;
 }
 
 html {
