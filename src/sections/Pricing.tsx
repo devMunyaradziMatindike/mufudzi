@@ -4,7 +4,8 @@ import { Section, SectionHead } from "../components/ui";
 import type { DocumentKind } from "../lib/quote-pdf";
 import { QuoteDialog } from "./QuoteDialog";
 
-const money = (n: number) => n.toLocaleString("en-US");
+const money = (n: number) =>
+  n.toLocaleString("en-US", Number.isInteger(n) ? undefined : { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
 export function Pricing() {
   const [raw, setRaw] = useState("10");
@@ -27,7 +28,7 @@ export function Pricing() {
 
   return (
     <Section id="pricing">
-      <SectionHead eyebrow="Pricing" title="USD 140 for the tracker. USD 8 a month after four months.">
+      <SectionHead eyebrow="Pricing" title="USD 210 for the tracker. USD 14.99 a month after four months.">
         The first {PRICING.freeMonths} months of the license are included with the tracker. The USD {PRICING.license} license starts after that.
       </SectionHead>
 

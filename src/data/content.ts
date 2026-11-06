@@ -11,8 +11,8 @@ export const CONTACT = {
 };
 
 export const PRICING = {
-  tracker: 140,
-  license: 8,
+  tracker: 210,
+  license: 14.99,
   freeMonths: 4,
 };
 
