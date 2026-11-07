@@ -59,6 +59,16 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a
+                  href={CONTACT.whatsappGroupUrl}
+                  className="flex items-center gap-2 text-[#25D366] hover:text-white"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icon.WhatsApp /> Join tracker updates on WhatsApp
+                </a>
+              </li>
+              <li>
                 <a href={`tel:${CONTACT.phoneIntl}`} className="flex items-center gap-2 hover:text-white">
                   <Icon.Phone /> {CONTACT.phone}
                 </a>

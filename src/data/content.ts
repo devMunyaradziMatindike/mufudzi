@@ -4,6 +4,7 @@ export const CONTACT = {
   whatsapp: "+263 77 498 4359",
   whatsappIntl: "263774984359",
   whatsappUrl: "https://wa.me/263774984359",
+  whatsappGroupUrl: "https://chat.whatsapp.com/GPUbAZEfQ7IJLDQHvuZycq?s=cl&p=a&iam=2",
   email: "info@nessosystems.co.zw",
   play: "https://play.google.com/store/apps/details?id=com.musikawedu.mobile",
   appStore: "https://apps.apple.com/zw/app/tracesky/id6771047295",

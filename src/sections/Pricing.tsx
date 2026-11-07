@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { PRICING } from "../data/content";
-import { Section, SectionHead } from "../components/ui";
+import { CONTACT, PRICING } from "../data/content";
+import { Icon, Section, SectionHead } from "../components/ui";
 import type { DocumentKind } from "../lib/quote-pdf";
 import { QuoteDialog } from "./QuoteDialog";
 
@@ -108,6 +108,14 @@ export function Pricing() {
           Generate Invoice
         </button>
       </div>
+      <a
+        href={CONTACT.whatsappGroupUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="mt-6 inline-flex items-center gap-2 text-[15px] font-semibold text-[#25D366] transition hover:text-green-dark"
+      >
+        <Icon.WhatsApp /> Join tracker updates on WhatsApp
+      </a>
       {documentKind && (
         <QuoteDialog initialTrackers={count || 1} kind={documentKind} onClose={() => setDocumentKind(null)} />
       )}
