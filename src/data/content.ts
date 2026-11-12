@@ -12,9 +12,9 @@ export const CONTACT = {
 };
 
 export const PRICING = {
-  tracker: 210,
-  license: 14.99,
-  freeMonths: 4,
+  tracker: 140,
+  license: 4.99,
+  freeMonths: 6,
 };
 
 export const VISION = {

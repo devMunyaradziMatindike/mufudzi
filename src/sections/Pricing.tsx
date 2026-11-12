@@ -28,7 +28,7 @@ export function Pricing() {
 
   return (
     <Section id="pricing">
-      <SectionHead eyebrow="Pricing" title="USD 210 for the tracker. USD 14.99 a month after four months.">
+      <SectionHead eyebrow="Pricing" title="USD 140 for the tracker. USD 4.99 a month after six months.">
         The first {PRICING.freeMonths} months of the license are included with the tracker. The USD {PRICING.license} license starts after that.
       </SectionHead>
 
