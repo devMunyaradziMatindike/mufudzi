@@ -1,12 +1,102 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { Icon } from "../components/ui";
 
-const PARTNERS = [
+type PartnerContact = {
+  person: string;
+  phones: string[];
+  address: string;
+};
+
+type Partner = {
+  name: string;
+  href: string | null;
+  src: string;
+  role: string | null;
+  contact: PartnerContact | null;
+};
+
+const PARTNERS: Partner[] = [
   {
     name: "Musikawedu",
     href: "https://musikawedu.com",
     src: "/images/partner-musikawedu.png",
+    role: null,
+    contact: null,
+  },
+  {
+    name: "Crop and Kraal",
+    href: null,
+    src: "/images/partner-crop-and-kraal.jpg",
+    role: "Reseller",
+    contact: {
+      person: "Gamuchirai Hondoma",
+      phones: ["+263 771 277 114", "+263 719 277 114"],
+      address: "154 Robert Mugabe, Eastlea",
+    },
   },
 ];
+
+function phoneIntl(phone: string) {
+  return phone.replace(/[^\d+]/g, "");
+}
+
+function whatsappUrl(phone: string) {
+  return `https://wa.me/${phoneIntl(phone).replace(/^\+/, "")}`;
+}
+
+function PartnerContactDialog({ partner, onClose }: { partner: Partner; onClose: () => void }) {
+  const contact = partner.contact;
+  if (!contact) return null;
+
+  return (
+    <div data-lenis-prevent className="fixed inset-0 z-[60] overflow-auto bg-ink/40 px-4 py-10" onClick={onClose}>
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="partner-contact-title"
+        className="card mx-auto w-full max-w-[420px] p-6 sm:p-8"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-green">{partner.role ?? "Partner"}</p>
+        <h2 id="partner-contact-title" className="mt-2 text-2xl font-bold tracking-tight text-ink">
+          {partner.name}
+        </h2>
+        <p className="mt-1 text-[15px] text-grey">{contact.person}</p>
+
+        <ul className="mt-6 space-y-3">
+          {contact.phones.map((phone) => (
+            <li key={phone} className="rounded-2xl border border-line bg-surface px-4 py-3">
+              <p className="text-sm font-bold text-ink">{phone}</p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                <a href={`tel:${phoneIntl(phone)}`} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-semibold text-ink hover:border-green">
+                  <Icon.Phone /> Call
+                </a>
+                <a
+                  href={whatsappUrl(phone)}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-xs font-semibold text-ink hover:border-green"
+                >
+                  <Icon.WhatsApp /> WhatsApp
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-5 text-sm leading-relaxed text-grey">
+          <span className="font-semibold text-ink">Address</span>
+          <br />
+          {contact.address}
+        </p>
+
+        <button type="button" onClick={onClose} className="btn btn-ghost mt-6 w-full">
+          Close
+        </button>
+      </div>
+    </div>
+  );
+}
 
 const SDGS = [
   {
@@ -139,27 +229,73 @@ function SdgTile({ goal, open, onOpen, onClose }: { goal: Sdg; open: boolean; on
 
 export function Partners() {
   const [active, setActive] = useState<number | null>(null);
+  const [contactPartner, setContactPartner] = useState<Partner | null>(null);
+
+  useEffect(() => {
+    if (!contactPartner) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setContactPartner(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [contactPartner]);
 
   return (
     <section className="border-t border-line bg-white" aria-label="Official partners and standards">
+      {contactPartner ? <PartnerContactDialog partner={contactPartner} onClose={() => setContactPartner(null)} /> : null}
       <div className="mx-auto max-w-[1280px] px-6 py-16 md:py-20">
         <div className="eyebrow">Official partners</div>
         <h2 className="mt-3 max-w-[640px] text-[clamp(28px,3.5vw,40px)] font-bold leading-tight tracking-tight">
           Mufudzi is an official product of Musikawedu.
         </h2>
-        <div className="mt-10">
-          {PARTNERS.map((p) => (
-            <a
-              key={p.name}
-              href={p.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label={p.name}
-              className="flex h-28 max-w-[420px] items-center justify-center rounded-[20px] border border-line bg-white p-6 transition hover:-translate-y-0.5 hover:border-green"
-            >
-              <img src={p.src} alt="" className="max-h-16 max-w-[220px] object-contain" />
-            </a>
-          ))}
+        <div className="mt-10 flex flex-wrap gap-4">
+          {PARTNERS.map((p) => {
+            const body = (
+              <>
+                <img src={p.src} alt="" className="max-h-16 max-w-[220px] object-contain" />
+                {p.role ? (
+                  <span className="mt-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-green">{p.role}</span>
+                ) : null}
+              </>
+            );
+            const className =
+              "flex h-auto min-h-28 max-w-[420px] flex-col items-center justify-center rounded-[20px] border border-line bg-white px-6 py-5 transition hover:-translate-y-0.5 hover:border-green";
+
+            if (p.href) {
+              return (
+                <a
+                  key={p.name}
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={p.name}
+                  className={className}
+                >
+                  {body}
+                </a>
+              );
+            }
+
+            if (p.contact) {
+              return (
+                <button
+                  key={p.name}
+                  type="button"
+                  aria-label={`Contact ${p.name}`}
+                  className={className}
+                  onClick={() => setContactPartner(p)}
+                >
+                  {body}
+                </button>
+              );
+            }
+
+            return (
+              <div key={p.name} aria-label={p.name} className={className}>
+                {body}
+              </div>
+            );
+          })}
         </div>
 
         <div className="mt-16 border-t border-line pt-16">
